@@ -1,3 +1,6 @@
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
+
 namespace YourOrg.Observability;
 
 /// <summary>
