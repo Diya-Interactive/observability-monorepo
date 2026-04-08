@@ -7,7 +7,7 @@ import { createLogger, expressLogger, expressErrorHandler, createHealthRouter } 
 
 // Create logger instance
 const logger = createLogger({
-  serviceName: 'node-example-service',
+  service: 'node-example-service',
   environment: 'development',
 });
 
