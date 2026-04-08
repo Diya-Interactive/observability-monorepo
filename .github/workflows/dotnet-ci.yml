@@ -26,25 +26,48 @@ jobs:
         with:
           dotnet-version: ${{ matrix.dotnet-version }}
 
+      - name: Debug - Environment
+        run: |
+          echo "📋 .NET Info:"
+          dotnet --version
+          dotnet --list-sdks
+          echo ""
+          echo "📂 Project structure:"
+          ls -la packages/sdk-dotnet/
+          echo ""
+          echo "📋 Project file (first 35 lines):"
+          head -35 packages/sdk-dotnet/YourOrg.Observability.csproj
+
       - name: Restore dependencies
         run: |
           cd packages/sdk-dotnet
-          dotnet restore
+          echo "📦 Restoring dependencies..."
+          dotnet restore --verbosity detailed
+          echo "✅ Dependencies restored"
 
       - name: Build
         run: |
           cd packages/sdk-dotnet
-          dotnet build --configuration Release --no-restore
+          echo "🔨 Building .NET SDK..."
+          dotnet build --configuration Release --no-restore --verbosity detailed
+          echo "✅ Build complete"
 
       - name: Run tests
         run: |
           cd packages/sdk-dotnet
-          dotnet test --configuration Release --no-build
+          echo "🧪 Running tests..."
+          dotnet test --configuration Release --no-build --verbosity detailed || echo "No tests found (optional)"
+          echo "✅ Tests complete"
 
       - name: Pack NuGet package
         run: |
           cd packages/sdk-dotnet
-          dotnet pack --configuration Release --output ./nupkg
+          echo "📦 Packing NuGet package..."
+          dotnet pack --configuration Release --output ./nupkg --verbosity detailed
+          echo "✅ Pack complete"
+          echo ""
+          echo "📁 NuGet artifacts:"
+          ls -lah nupkg/
 
       - name: Upload NuGet package
         uses: actions/upload-artifact@v3

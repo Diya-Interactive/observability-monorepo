@@ -20,16 +20,43 @@ jobs:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
 
+      - name: Debug - Environment
+        run: |
+          echo "📋 GitHub Context:"
+          echo "  Event: ${{ github.event_name }}"
+          echo "  Ref: ${{ github.ref }}"
+          echo "  Tag: ${GITHUB_REF#refs/tags/}"
+          echo ""
+          echo "🔍 Node/npm Info:"
+          node --version
+          npm --version
+          npm whoami || echo "Not logged in yet"
+
       - name: Install dependencies
-        run: npm ci
+        run: |
+          echo "📦 Installing dependencies..."
+          npm ci --verbose
+          echo "✅ Dependencies installed"
+          npm ls --depth=0
 
       - name: Build
-        run: npm run build --workspaces
+        run: |
+          echo "🔨 Building packages..."
+          npm run build --workspaces --verbose
+          echo "✅ Build complete"
+          echo ""
+          echo "📁 Build artifacts:"
+          find . -name "dist" -type d 2>/dev/null | head -5
 
       - name: Publish to npm
         run: |
-          npm publish -w @your-org/observability
-          npm publish -w @your-org/observability-cli
+          echo "🚀 Publishing to npm..."
+          echo "  NPM_TOKEN length: ${#NPM_TOKEN}"
+          echo "  Registry: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}"
+          npm publish -w @your-org/observability --verbose
+          echo "✅ Published @your-org/observability"
+          npm publish -w @your-org/observability-cli --verbose
+          echo "✅ Published @your-org/observability-cli"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
@@ -45,20 +72,43 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Debug - Environment
+        run: |
+          echo "🐍 Python Info:"
+          python --version
+          pip --version
+          echo ""
+          echo "📂 Project structure:"
+          ls -la packages/sdk-python/
+
       - name: Install build tools
         run: |
+          echo "📦 Installing build tools..."
           python -m pip install --upgrade pip
-          pip install build twine
+          pip install build twine --verbose
+          echo "✅ Build tools installed"
+          pip list | grep -E "build|twine"
 
       - name: Build distribution
         run: |
           cd packages/sdk-python
-          python -m build
+          echo "🔨 Building Python distribution..."
+          python -m build --verbose
+          echo "✅ Build complete"
+          echo ""
+          echo "📁 Build artifacts:"
+          ls -lah dist/
 
       - name: Publish to PyPI
         run: |
           cd packages/sdk-python
-          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+          echo "🚀 Publishing to PyPI..."
+          echo "  PYPI_TOKEN length: ${#PYPI_TOKEN}"
+          twine check dist/*
+          twine upload dist/* -u __token__ -p "$PYPI_TOKEN" --verbose
+          echo "✅ Published to PyPI"
+        env:
+          PYPI_TOKEN: ${{ secrets.PYPI_TOKEN }}
 
   publish-nuget:
     runs-on: ubuntu-latest
@@ -72,28 +122,56 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
+      - name: Debug - Environment
+        run: |
+          echo "📋 .NET Info:"
+          dotnet --version
+          dotnet --list-sdks
+          dotnet --list-runtimes
+          echo ""
+          echo "📂 Project structure:"
+          ls -la packages/sdk-dotnet/
+          echo ""
+          echo "📄 Project file contents:"
+          head -30 packages/sdk-dotnet/YourOrg.Observability.csproj
+
       - name: Restore dependencies
         run: |
           cd packages/sdk-dotnet
-          dotnet restore
+          echo "📦 Restoring dependencies..."
+          dotnet restore --verbosity detailed
+          echo "✅ Dependencies restored"
 
       - name: Build
         run: |
           cd packages/sdk-dotnet
-          dotnet build --configuration Release --no-restore
+          echo "🔨 Building .NET package..."
+          dotnet build --configuration Release --no-restore --verbosity detailed
+          echo "✅ Build complete"
 
       - name: Pack
         run: |
           cd packages/sdk-dotnet
-          dotnet pack --configuration Release --output ./nupkg
+          echo "📦 Packing NuGet package..."
+          dotnet pack --configuration Release --output ./nupkg --verbosity detailed
+          echo "✅ Pack complete"
+          echo ""
+          echo "📁 NuGet artifacts:"
+          ls -lah nupkg/
 
       - name: Publish to NuGet
         run: |
           cd packages/sdk-dotnet
+          echo "🚀 Publishing to NuGet..."
+          echo "  NUGET_TOKEN length: ${#NUGET_TOKEN}"
           dotnet nuget push "**/nupkg/*.nupkg" \
-            --api-key ${{ secrets.NUGET_TOKEN }} \
+            --api-key "$NUGET_TOKEN" \
             --source https://api.nuget.org/v3/index.json \
-            --skip-duplicate
+            --skip-duplicate \
+            --verbosity detailed
+          echo "✅ Published to NuGet"
+        env:
+          NUGET_TOKEN: ${{ secrets.NUGET_TOKEN }}
 
   create-release:
     runs-on: ubuntu-latest

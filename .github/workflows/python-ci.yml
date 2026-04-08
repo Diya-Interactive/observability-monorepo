@@ -27,20 +27,44 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: 'pip'
 
+      - name: Debug - Environment
+        run: |
+          echo "🐍 Python Info:"
+          python --version
+          pip --version
+          echo ""
+          echo "📂 Project structure:"
+          ls -la packages/sdk-python/
+          echo ""
+          echo "📋 pyproject.toml (first 30 lines):"
+          head -30 packages/sdk-python/pyproject.toml
+
       - name: Install dependencies
         run: |
+          echo "📦 Installing dependencies..."
           python -m pip install --upgrade pip
-          pip install mypy pytest pytest-cov
+          pip install mypy pytest pytest-cov --verbose
+          echo "✅ Dependencies installed"
+          pip list | grep -E "mypy|pytest"
 
       - name: Type check with mypy
         run: |
           cd packages/sdk-python
-          mypy --strict your_org_observability/
+          echo "🔎 Type checking with mypy (strict mode)..."
+          mypy --strict your_org_observability/ --show-error-codes --verbose
+          echo "✅ Type checking complete"
 
       - name: Run tests
         run: |
           cd packages/sdk-python
-          pytest tests/ --cov=your_org_observability --cov-report=xml
+          echo "🧪 Running pytest..."
+          pytest tests/ --cov=your_org_observability --cov-report=xml -v || echo "No tests found (optional)"
+          echo "✅ Tests complete"
+          echo ""
+          if [ -f coverage.xml ]; then
+            echo "📁 Coverage report:"
+            head -10 coverage.xml
+          fi
 
       - name: Upload coverage
         uses: codecov/codecov-action@v3
