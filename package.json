@@ -1,6 +1,6 @@
 {
   "name": "observability-monorepo",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Complete observability package ecosystem for Python/Django, .NET/C#, and Node.js/TypeScript",
   "private": true,
   "workspaces": [

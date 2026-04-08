@@ -5,7 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+## [1.0.1] - 2026-04-08
+
+### Fixed
+- Added missing using directives for ASP.NET Core types in .NET SDK
+- Added comprehensive debug logging to CI/CD workflows for better troubleshooting
+- Fixed missing IServiceCollection, IApplicationBuilder, and HttpContext using statements
+
+### Improved
+- Enhanced workflow visibility with detailed environment and dependency logging
+- Added verbose output to all build, test, and publish steps
+
+## [1.0.0] - 2026-04-08
 
 ### Added
 - Initial release of observability SDK ecosystem
