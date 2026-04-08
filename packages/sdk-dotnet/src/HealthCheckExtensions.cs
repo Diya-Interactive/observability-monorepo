@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Builder;
 
 namespace YourOrg.Observability;
 
@@ -43,17 +44,14 @@ public static class HealthCheckExtensions
     {
         app.MapGet("/health", HealthHandler(serviceName))
             .WithName("health")
-            .WithOpenApi()
             .Produces<HealthResponse>(200);
 
         app.MapGet("/health/live", LiveHandler())
             .WithName("health_live")
-            .WithOpenApi()
             .Produces<LiveResponse>(200);
 
         app.MapGet("/health/ready", ReadyHandler(readinessCheck))
             .WithName("health_ready")
-            .WithOpenApi()
             .Produces<ReadyResponse>(200)
             .Produces<ReadyResponse>(503);
 

@@ -30,7 +30,7 @@ public class ObservabilityLoggingMiddleware : IMiddleware
         ObservabilityLogger.SetRequestId(requestId);
 
         // Attach to response headers
-        context.Response.Headers.Add("X-Request-Id", requestId);
+        context.Response.Headers.Append("X-Request-Id", requestId);
 
         // Check if route should be skipped
         var shouldSkip = false;
