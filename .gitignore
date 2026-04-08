@@ -1,0 +1,49 @@
+# Node
+node_modules/
+dist/
+build/
+*.tsbuildinfo
+.npm
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist-info/
+.Python
+env/
+venv/
+.venv
+pip-log.txt
+pip-delete-this-directory.txt
+.pytest_cache/
+.mypy_cache/
+.coverage
+
+# .NET
+bin/
+obj/
+.vs/
+*.user
+*.suo
+.vscode/
+.idea/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# OS
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# IDE
+*.code-workspace
+.vscode-settings.json
+
+# Build outputs
+monitoring-infra/

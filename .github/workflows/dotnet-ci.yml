@@ -1,0 +1,53 @@
+name: .NET CI
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'packages/sdk-dotnet/**'
+      - '.github/workflows/dotnet-ci.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'packages/sdk-dotnet/**'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        dotnet-version: ['8.0.x']
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: ${{ matrix.dotnet-version }}
+
+      - name: Restore dependencies
+        run: |
+          cd packages/sdk-dotnet
+          dotnet restore
+
+      - name: Build
+        run: |
+          cd packages/sdk-dotnet
+          dotnet build --configuration Release --no-restore
+
+      - name: Run tests
+        run: |
+          cd packages/sdk-dotnet
+          dotnet test --configuration Release --no-build
+
+      - name: Pack NuGet package
+        run: |
+          cd packages/sdk-dotnet
+          dotnet pack --configuration Release --output ./nupkg
+
+      - name: Upload NuGet package
+        uses: actions/upload-artifact@v3
+        with:
+          name: nuget-package
+          path: packages/sdk-dotnet/nupkg/

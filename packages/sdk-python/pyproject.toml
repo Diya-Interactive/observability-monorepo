@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "your-org-observability"
+version = "1.0.0"
+description = "Zero-dependency observability SDK for Python and Django"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "Your Org", email = "team@your-org.com" }]
+keywords = ["logging", "observability", "monitoring", "django", "structured-logging"]
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Environment :: Web Environment",
+    "Framework :: Django :: 3.2",
+    "Framework :: Django :: 4.0",
+    "Framework :: Django :: 4.1",
+    "Framework :: Django :: 4.2",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Internet :: Log Analysis",
+]
+dependencies = []
+
+[project.optional-dependencies]
+django = ["django>=3.2"]
+dev = [
+    "django>=3.2",
+    "mypy>=1.7.0",
+    "pytest>=7.0",
+    "pytest-django>=4.5.0",
+    "black>=23.0",
+    "isort>=5.0",
+]
+
+[project.urls]
+Homepage = "https://github.com/your-org/observability-monorepo"
+Repository = "https://github.com/your-org/observability-monorepo"
+
+[tool.setuptools]
+packages = ["your_org_observability"]
+
+[tool.mypy]
+python_version = "3.9"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+warn_no_return = true
+warn_unused_ignores = true
+warn_redundant_casts = true
+ignore_missing_imports = true
+
+["tool.mypy.overrides"]
+[[tool.mypy.overrides]]
+module = "django.*"
+ignore_missing_imports = true

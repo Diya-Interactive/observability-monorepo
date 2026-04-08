@@ -1,0 +1,12 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "observability-example-django"
+version = "1.0.0"
+description = "Example Django service using observability SDK"
+requires-python = ">=3.9"
+
+[project.optional-dependencies]
+dev = ["django>=4.2", "your-org-observability>=1.0.0"]

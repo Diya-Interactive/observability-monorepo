@@ -1,0 +1,28 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <PackageId>YourOrg.Observability</PackageId>
+    <Title>YourOrg.Observability</Title>
+    <Version>1.0.0</Version>
+    <Authors>Your Org</Authors>
+    <Description>Zero-dependency observability SDK for .NET and ASP.NET Core</Description>
+    <PackageTags>observability;logging;monitoring;aspnetcore;structured-logging</PackageTags>
+    <ProjectUrl>https://github.com/your-org/observability-monorepo</ProjectUrl>
+    <RepositoryUrl>https://github.com/your-org/observability-monorepo</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <AspNetCoreVersion>8.0</AspNetCoreVersion>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <FrameworkReference Include="Microsoft.AspNetCore.App" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="System.Text.Json" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>

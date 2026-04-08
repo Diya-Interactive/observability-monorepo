@@ -1,0 +1,113 @@
+name: Publish Packages
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+  workflow_dispatch:
+
+jobs:
+  publish-npm:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build --workspaces
+
+      - name: Publish to npm
+        run: |
+          npm publish -w @your-org/observability
+          npm publish -w @your-org/observability-cli
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+  publish-pypi:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.12'
+
+      - name: Install build tools
+        run: |
+          python -m pip install --upgrade pip
+          pip install build twine
+
+      - name: Build distribution
+        run: |
+          cd packages/sdk-python
+          python -m build
+
+      - name: Publish to PyPI
+        run: |
+          cd packages/sdk-python
+          twine upload dist/* -u __token__ -p ${{ secrets.PYPI_TOKEN }}
+
+  publish-nuget:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore dependencies
+        run: |
+          cd packages/sdk-dotnet
+          dotnet restore
+
+      - name: Build
+        run: |
+          cd packages/sdk-dotnet
+          dotnet build --configuration Release --no-restore
+
+      - name: Pack
+        run: |
+          cd packages/sdk-dotnet
+          dotnet pack --configuration Release --output ./nupkg
+
+      - name: Publish to NuGet
+        run: |
+          cd packages/sdk-dotnet
+          dotnet nuget push "**/nupkg/*.nupkg" \
+            --api-key ${{ secrets.NUGET_TOKEN }} \
+            --source https://api.nuget.org/v3/index.json \
+            --skip-duplicate
+
+  create-release:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/')
+    needs: [publish-npm, publish-pypi, publish-nuget]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
+          draft: false
+          prerelease: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
