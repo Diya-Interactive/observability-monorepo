@@ -1,6 +1,6 @@
 {
   "name": "@your-org/observability-cli",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "CLI tool for scaffolding the complete observability infrastructure stack",
   "main": "dist/index.js",
   "bin": {
