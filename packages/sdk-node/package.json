@@ -1,5 +1,5 @@
 {
-  "name": "@your-org/observability",
+  "name": "@rafaynpmorg/observability",
   "version": "1.0.2",
   "description": "Zero-dependency observability SDK for Node.js and Express",
   "main": "dist/index.js",
@@ -32,6 +32,9 @@
     "express": {
       "optional": true
     }
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",

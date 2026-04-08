@@ -70,14 +70,14 @@ if [ "$SKIP_NPM" = false ]; then
         echo -e "${GREEN}✅ Build complete${NC}"
         echo ""
         
-        echo -e "${YELLOW}📤 Publishing @your-org/observability...${NC}"
-        npm publish -w @your-org/observability --verbose
-        echo -e "${GREEN}✅ Published @your-org/observability${NC}"
+        echo -e "${YELLOW}📤 Publishing @rafaynpmorg/observability...${NC}"
+        npm publish -w @rafaynpmorg/observability --verbose
+        echo -e "${GREEN}✅ Published @rafaynpmorg/observability${NC}"
         echo ""
         
-        echo -e "${YELLOW}📤 Publishing @your-org/observability-cli...${NC}"
-        npm publish -w @your-org/observability-cli --verbose
-        echo -e "${GREEN}✅ Published @your-org/observability-cli${NC}"
+        echo -e "${YELLOW}📤 Publishing @rafaynpmorg/observability-cli...${NC}"
+        npm publish -w @rafaynpmorg/observability-cli --verbose
+        echo -e "${GREEN}✅ Published @rafaynpmorg/observability-cli${NC}"
         echo ""
     fi
 fi
@@ -166,8 +166,8 @@ echo ""
 echo "📊 Published Packages:"
 
 if [ "$SKIP_NPM" = false ]; then
-    echo "  ✅ @your-org/observability (npm)"
-    echo "  ✅ @your-org/observability-cli (npm)"
+    echo "  ✅ @rafaynpmorg/observability (npm)"
+    echo "  ✅ @rafaynpmorg/observability-cli (npm)"
 fi
 
 if [ "$SKIP_PYPI" = false ]; then
@@ -180,8 +180,8 @@ fi
 
 echo ""
 echo "🔗 Package links:"
-echo "  npm: https://www.npmjs.com/package/@your-org/observability"
-echo "  npm: https://www.npmjs.com/package/@your-org/observability-cli"
+echo "  npm: https://www.npmjs.com/package/@rafaynpmorg/observability"
+echo "  npm: https://www.npmjs.com/package/@rafaynpmorg/observability-cli"
 echo "  PyPI: https://pypi.org/project/your-org-observability/"
 echo "  NuGet: https://www.nuget.org/packages/YourOrg.Observability/"
 echo ""

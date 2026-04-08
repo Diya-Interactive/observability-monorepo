@@ -3,7 +3,7 @@
  */
 
 import express, { Request, Response } from 'express';
-import { createLogger, expressLogger, expressErrorHandler, createHealthRouter } from '@your-org/observability';
+import { createLogger, expressLogger, expressErrorHandler, createHealthRouter } from '@rafaynpmorg/observability';
 
 // Create logger instance
 const logger = createLogger({

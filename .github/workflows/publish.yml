@@ -53,10 +53,10 @@ jobs:
           echo "🚀 Publishing to npm..."
           echo "  NPM_TOKEN length: ${#NPM_TOKEN}"
           echo "  Registry: ${NPM_CONFIG_REGISTRY:-https://registry.npmjs.org/}"
-          npm publish -w @your-org/observability --verbose
-          echo "✅ Published @your-org/observability"
-          npm publish -w @your-org/observability-cli --verbose
-          echo "✅ Published @your-org/observability-cli"
+          npm publish -w @rafaynpmorg/observability --verbose
+          echo "✅ Published @rafaynpmorg/observability"
+          npm publish -w @rafaynpmorg/observability-cli --verbose
+          echo "✅ Published @rafaynpmorg/observability-cli"
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 

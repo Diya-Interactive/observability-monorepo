@@ -1,4 +1,4 @@
-# @your-org/observability
+# @rafaynpmorg/observability
 
 Zero-dependency observability SDK for Node.js and Express. Provides structured JSON logging, automatic request/response tracking, and health check endpoints.
 
@@ -14,7 +14,7 @@ Zero-dependency observability SDK for Node.js and Express. Provides structured J
 ## Installation
 
 ```bash
-npm install @your-org/observability
+npm install @rafaynpmorg/observability
 ```
 
 If you're using Express, install it separately:
@@ -28,7 +28,7 @@ npm install express
 ### Basic Logger
 
 ```typescript
-import { createLogger } from '@your-org/observability';
+import { createLogger } from '@rafaynpmorg/observability';
 
 const logger = createLogger({
   service: 'my-api',
@@ -49,7 +49,7 @@ import {
   expressLogger,
   expressErrorHandler,
   createHealthRouter
-} from '@your-org/observability';
+} from '@rafaynpmorg/observability';
 
 const app = express();
 const logger = createLogger({
@@ -73,7 +73,7 @@ app.use(createHealthRouter('my-api'));
 app.use(expressErrorHandler(logger));
 
 // Graceful error handler
-import { setupErrorHandlers } from '@your-org/observability';
+import { setupErrorHandlers } from '@rafaynpmorg/observability';
 setupErrorHandlers(logger);
 
 app.listen(3000, () => {
